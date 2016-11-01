@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Basics";
+}
+
+<h1>Basics</h1>
+<ol ng-app="">
+    <li>
+        <dl>
+            <dt>ng-model</dt>
+            <dd>
+                <input type="text" ng-model="name" class="form-control" />
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        Hello {{name}}
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </li>
+    <li>
+        <dl>
+            <dt>ng-bind</dt>
+            <dd>
+                <div class="panel panel-info">
+                    <div class="panel-body" data-ng-bind="name">
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </li>
+    <li>
+        <dl>
+            <dt>expressions</dt>
+            <dd>
+                <div class="panel panel-info">
+                    <div class="panel-body">
+                        10 + 10 = {{9+11}}
+                    </div>
+                </div>
+                <div class="panel panel-info">
+                    <div class="panel-body" data-ng-init="language='AngularJS'">
+                        <input type="text" class="form-control" data-ng-model="language" />
+                        <div data-ng-bind="language"></div>
+                    </div>
+                </div>
+            </dd>
+        </dl>
+    </li>
+    <li>
+        <dl>
+            <dt>ng-repeat</dt>
+            <dd>
+                <div class="panel panel-info">
+                    <div class="panel-body" data-ng-init="myFavLan=[{name:'c#',extension:'.cs'},{name:'c++',extension:'.cpp'},{name:'T-sql',extension:'.sql'}]">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Extension</th>
+                                </tr>
+                            </thead>
+                            <tbody data-ng-repeat="lan in myFavLan">
+                                <tr>
+                                    <td>{{lan.name}}</td>
+                                    <td>{{lan.extension}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </dd>
+        </dl>
+    </li>
+</ol>

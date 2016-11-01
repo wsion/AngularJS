@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "Scopes";
+}
+
+<h1>Passing Data Between Different Scopes</h1>
+<div ng-app="myApp">
+    <div class="panel panel-info">
+        <div class="panel-body" ng-controller="scopesController">
+            <div class="row">
+                <div class="col-lg-6">
+                    Paranet Message: <input type="text" class="form-control" ng-model="message.msg1">
+                </div>
+                <div class="col-lg-6">
+                    Paranet Message: <input type="text" class="form-control" ng-model="message.msg2" />
+                </div>
+            </div>
+            <div class="row" ng-repeat="i in range track by $index">
+                <div class="col-lg-6">
+                    Child Message {{ $index + 1 }}: <input type="text" class="form-control" ng-model="message.msg1" />
+                </div>
+                <div class="col-lg-6">
+                    Child Message {{ $index + 1 }}: <input type="text" class="form-control" ng-model="message.msg2" />
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary" ng-click="check()">Check $scope</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = angular.module('myApp', []);
+
+    app.controller("scopesController", function ($scope, $location, $http) {
+        $scope.range = new Array(5);
+
+        $scope.check = function () {
+            console.log(this);
+        }
+    })
+</script>

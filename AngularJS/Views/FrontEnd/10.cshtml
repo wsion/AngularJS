@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "Services";
+}
+
+<div ng-app="myApp">
+
+    <h1>Services</h1>
+    <div>
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="serController">
+                {{randomNumber}}
+                <br />
+                <button type="button" class="btn btn-primary" ng-click="genNum()">Gen Random</button>
+            </div>
+        </div>
+    </div>
+
+    <h1>Factories</h1>
+    <div>
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="facController">
+                {{randomNumber}}
+                <br />
+                <button type="button" class="btn btn-primary" ng-click="genNum()">Gen Random Even</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+
+    app.service("random", function () {
+        this.generate = function () {
+            console.log(this);
+            var num = Math.floor(Math.random() * 10);
+            return num;
+        }
+    });
+
+    app.controller("serController", function ($scope, random) {
+        $scope.genNum = function () {
+            $scope.randomNumber = random.generate();
+        }
+    });
+
+    app.factory("even", function () {
+        var generator = {};
+        generator.generate = function () {
+            var num = Math.floor(Math.random() * 10)*2;
+            return num;
+        }
+        return generator;
+    });
+
+    app.controller("facController", function ($scope, even) {
+        $scope.genNum = function () {
+            $scope.randomNumber = even.generate();
+        }
+    });
+</script>

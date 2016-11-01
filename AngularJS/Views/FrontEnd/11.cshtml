@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Providers";
+}
+
+<div ng-app="myApp">
+
+    <h1>Providers</h1>
+    <div>
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="providerController">
+                {{message}}
+                <br />
+                <button type="button" class="btn btn-primary" ng-click="getMessage()">Gen Random</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+
+    app.provider("date", function () {
+        var obj = {};
+
+        //Private variable
+        var _name;
+
+        //setName can be invoked in config function
+        obj.setName = function (name) {
+            _name = name;
+        };
+
+        //$get function will be invoked by injector
+        obj.$get = function () {
+            return {
+                showMessage: function () {
+                    var date = new Date();
+                    return "Hi " + name + ", it's " + date.getTime();
+                },
+                getDate:function(){
+                    var date = new Date();
+                    return date.getTime();
+                }
+            }
+        };
+
+        return obj;
+    });
+
+    app.controller("providerController", function ($scope, date) {
+        $scope.getMessage = function () {
+            console.log(date);
+            $scope.message = date.showMessage();
+        }
+    });
+
+    //config function is used for initializing data?
+    app.config(function (dateProvider) {
+        var time = dateProvider.$get().getDate();
+        if (time % 2 == 0) {
+            dateProvider.setName("Wei Wei");
+        } else {
+            dateProvider.setName("Marry");
+        }
+    });
+</script>

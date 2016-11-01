@@ -1,0 +1,180 @@
+﻿@{
+    ViewBag.Title = "$parse service";
+}
+
+<div ng-app="mainApp">
+
+    <h1>$parse</h1>
+    <div>
+
+
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="controller1">
+                <h2>Simple Example</h2>
+                <p>
+                    Expression Result: {{ParsedValue}}
+                </p>
+                <p>
+                    Parsed Function：<br />
+<pre>function (s, locals, a, i) {
+        var v1, v2 = locals && ('name' in locals);
+        if (i) {
+            v1 = i[0];
+        } else {
+            if (!(v2)) {
+                if (s) { v1 = s.name; }
+            } else {
+                v1 = locals.name;
+            }
+        }
+        return plus('Hello ', v1);
+    };</pre>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="controller2">
+                <h2>Dynamic Expression</h2>
+                <p>
+                    <input type="text" class="form-control" ng-model="expression" />
+                </p>
+                <p>
+                    Expression Result: {{ParsedValue}}
+                </p>
+            </div>
+        </div>
+
+
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="controller3">
+                <h2>Complicated Example</h2>
+                <p>
+                    Expression Result: {{ParsedValue}}
+                </p>
+                <p>
+                    Parsed Function：<br /><pre>
+var fn = function(s, l, a, i) {
+    var v0, v1, v2, v3 = l && ('mul' in l),
+        v4, v5 = l && ('a' in l),
+        v6, v7, v8, v9 = l && ('add' in l),
+        v10, v11 = l && ('b' in l),
+        v12, v13 = l && ('c' in l);
+    v2 = v3 ? l : s;
+    if (!(v3)) {
+        if (s) {
+            v1 = s.mul;
+        }
+    } else {
+        v1 = l.mul;
+    }
+    if (v1 != null) {
+        ensureSafeFunction(v1, text);
+        if (!(v5)) {
+            if (s) {
+                v4 = s.a;
+            }
+        } else {
+            v4 = l.a;
+        }
+        v8 = v9 ? l : s;
+        if (!(v9)) {
+            if (s) {
+                v7 = s.add;
+            }
+        } else {
+            v7 = l.add;
+        }
+        if (v7 != null) {
+            ensureSafeFunction(v7, text);
+            if (!(v11)) {
+                if (s) {
+                    v10 = s.b;
+                }
+            } else {
+                v10 = l.b;
+            }
+            if (!(v13)) {
+                if (s) {
+                    v12 = s.c;
+                }
+            } else {
+                v12 = l.c;
+            }
+            ensureSafeObject(v8, text);
+            v6 = ensureSafeObject(v8.add(ensureSafeObject(v10, text), ensureSafeObject(v12, text)), text);
+        } else {
+            v6 = undefined;
+        }
+        ensureSafeObject(v2, text);
+        v0 = ensureSafeObject(v2.mul(ensureSafeObject(v4, text), ensureSafeObject(v6, text)), text);
+    } else {
+        v0 = undefined;
+    }
+    return v0;
+};
+return fn;</pre>
+                </p>
+                <p>
+                    &lt;a href=&quot;&quot;
+                    ng-click=&quot;doSomething($event.target)&quot;&gt;link&lt;/a&gt
+                </p>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var app = angular.module("mainApp", []);
+
+    app.controller("controller1", function ($scope, $parse) {
+        var context = { name: "dreamapple" };
+        var expression = "'Hello ' + name";
+        var parseFunc = $parse(expression);
+        $scope.ParsedValue = parseFunc(null, context);
+    });
+
+    app.controller("controller2", function ($scope, $parse) {
+        $scope.$watch("expression", function (newValue, oldValue, context) {
+            if (newValue !== oldValue) {
+                var parseFunc = $parse(newValue);
+                console.log("context:", context);
+                console.log("parseFunc:", parseFunc);
+                $scope.ParsedValue = parseFunc(context);
+            }
+        });
+
+        $scope.expression = '"a"+"b"';
+
+    });
+
+    app.controller("controller3", function ($scope, $parse) {
+        $scope.context = {
+            add: function (a, b) {
+                return a + b;
+            },
+            mul: function (a, b) {
+                return a * b;
+            }
+        };
+
+        $scope.expression = 'mul(a,add(b,c))';
+
+        $scope.data = {
+            a: 3,
+            b: 6,
+            c: 9
+        };
+
+        var parseFunc = $parse($scope.expression);
+
+        console.log("parseFunc:", parseFunc);
+
+        $scope.ParsedValue = parseFunc($scope.context, $scope.data);
+    });
+
+</script>

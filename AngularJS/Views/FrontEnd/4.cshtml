@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Include";
+}
+
+<h1>ng-include</h1>
+<div ng-app="myApp">
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-include="'/FrontEnd/Partial?viewname=4-1'"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+</script>

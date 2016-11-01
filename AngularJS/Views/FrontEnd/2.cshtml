@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Controller";
+}
+
+<h1>ng-controller</h1>
+<div ng-app="myApp">
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-controller="menus">
+                Choose the menu item:
+                <button ng-click="click('Account')">Account</button>
+                <button ng-click="click('Profile')">Profile</button>
+                <button ng-click="click('Balance')">Balance</button>
+                <button ng-click="click('Withdraw')">Withdraw</button>
+                <button ng-click="click('Payment')">Payment</button>
+                <p>
+                    Your selection is: <span ng-bind="menu"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+    app.controller("menus", ["$scope", function ($scope) {
+        $scope.menu = "None";
+
+        $scope.click = function ($menu) {
+            $scope.menu = $menu;
+        }        
+    }]);
+</script>

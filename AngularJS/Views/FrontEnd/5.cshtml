@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Route";
+}
+
+<h1>Route</h1>
+<div ng-app="myApp">
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-controller="navs">
+                <div ng-init="links=[{hash:'/',name:'Home'},{hash:'/profile',name:'Profile'},{hash:'/balance',name:'Balance'},{hash:'/default',name:'Default'}]">
+                    <div>
+                        <p ng-repeat="link in links" class="pull-left">
+                            <button type="button" class="btn btn-primary" ng-click="click(link.hash)">{{link.name}}</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-view=""></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = angular.module('myApp', ['ngRoute']);
+
+    app.config(function ($routeProvider) {
+        $routeProvider
+        .when('/', {
+            templateUrl: "/FrontEnd/Partial?viewname=5-1",
+            title: 'Welcome'
+        })
+        .when('/profile', {
+            templateUrl: "/FrontEnd/Partial?viewname=5-2",
+            title: 'Welcome'
+        })
+        .when('/balance', {
+            templateUrl: "/FrontEnd/Partial?viewname=5-3",
+            title: 'Welcome'
+        })
+        .otherwise({
+            template: 'Page not found without 404 code.'
+        });
+    });
+
+    app.controller("navs", function ($scope) {
+        $scope.click = function (hash) {
+            window.location.hash = hash;
+        }
+    })
+</script>
+
+@section scripts{
+    <script src="~/Scripts/angular-route.min.js"></script>
+}

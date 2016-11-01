@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Custom Directive";
+}
+
+<div ng-app="mainApp">
+
+    <h1>Custom Directive</h1>
+    <div>
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="mainController">
+                <div>
+                    $scope.message1: <input type="text" class="form-control" ng-model="message1" />
+                    <br />
+                    $scope.message2: <input type="text" class="form-control" ng-model="message2" />
+                </div>
+                <br />
+                <search-bar parameter1="{{message1}}" parameter2="message2" callback="callback()"></search-bar>
+                <br />
+                <search-bar parameter1="{{message1}}" parameter2="message2"></search-bar>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var app = angular.module("mainApp", []);
+
+    app.directive("searchBar", function () {
+        return {
+            templateUrl: "/FrontEnd/partial?viewname=14-template",
+            restrict: 'EA',
+            scope: {
+                parameter1: "@@",   //Text bind
+                parameter2: "=",    //Two way bind
+                callback: "&"       //One way bind
+            },
+            link: function ($scope, element, attributes) {
+                $scope.keyword = "";
+
+                $scope.search = function () {
+                    $scope.doSearch();
+                };
+
+                $scope.enter = function () {
+                    if (event.key == "Enter") {
+                        $scope.doSearch();
+                    };
+                };
+
+                $scope.doSearch = function () {
+                    console.log($scope);
+                    if (typeof $scope.callback === "function") {
+                        $scope.callback();
+                    }
+                }
+            },
+            controllerAs: "vm",
+            controller: function ($scope) {
+                var vm = this;
+                vm.info = "info";
+                vm.showInfo = function () {
+                    console.log(vm);
+                    console.log($scope);
+                }
+            }
+        };
+    });
+
+    app.controller("mainController", function ($scope) {
+        $scope.message1 = "Message1";
+        $scope.message2 = "Message2";
+
+        $scope.callback = function () {
+            console.log($scope);
+        };
+
+        $scope.$watch("message1", function (newVal, oldVal) {
+            console.log("value changed:" + newVal);
+        });
+
+        $scope.$watch("message2", function (newVal, oldVal) {
+            console.log("value changed:" + newVal);
+        });
+    });
+</script>

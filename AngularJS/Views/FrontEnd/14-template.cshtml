@@ -1,0 +1,13 @@
+﻿<div class="form-inline">
+    <input type="text" class="form-control" ng-model="keyword" ng-keyup="enter()" /><button type="button" class="btn btn-primary" ng-click="search()">Search</button>
+    <br />
+    <div>
+        Parameter 1:<input type="text" class="form-control" ng-model="parameter1" />(In Parameter)
+    </div>
+    <div>
+        Parameter 2:<input type="text" class="form-control" ng-model="parameter2" />(Ref Parameter)
+    </div>
+    <div ng-click="vm.showInfo()">
+        {{vm.info}}
+    </div>
+</div>

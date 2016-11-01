@@ -1,0 +1,23 @@
+﻿<div>
+    <label>Global Filter</label><input type="text" class="form-control" ng-model="keyword.$"/>
+</div>
+<div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Gender</th>
+            </tr>
+            <tr>
+                <th><label>Name Filter</label><input type="text" class="form-control" ng-model="keyword.Name" /></th>
+                <th><label>Gender Filter</label><input type="text" class="form-control" ng-model="keyword.Gender" /></th>
+            </tr>
+        </thead>
+        <tbody>            
+            <tr ng-repeat="item in data | filter:keyword">
+                <td ng-bind="item.Name"></td>
+                <td ng-bind="item.Gender"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

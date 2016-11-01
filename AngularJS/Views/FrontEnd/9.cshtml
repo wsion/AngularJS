@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "$watch() & $digest()";
+}
+
+<div ng-app="myApp">
+
+    <h1>$scope.$watch()</h1>
+    <div>
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="watchController">
+                <input type="text" class="form-control" ng-model="value" />
+                <br />
+                {{value}}
+                <br />
+                <button type="button" class="btn btn-primary" id="btn-scope1-gen">Gen Random</button>
+                <button type="button" class="btn btn-primary" ng-click="check()">Check $scope</button>
+            </div>
+        </div>
+    </div>
+
+    <h1>$scope.$digest()</h1>
+    <div>
+        <div class="panel panel-info">
+            <div class="panel-body" ng-controller="digetstController">
+                {{randomNumber | number: 5}}
+                <br />
+                <button type="button" class="btn btn-primary" id="btn-scope2-gen">Gen Random</button>
+                <button type="button" class="btn btn-primary" ng-click="refresh()">Fire all watchers from all scopes</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    var app = angular.module("myApp", []);
+
+    app.controller("watchController", function ($scope) {
+        $scope.check = function () {
+            console.log($scope);
+        };
+
+        document.querySelector("#btn-scope1-gen").addEventListener("click", function () {
+            $scope.value = Math.random().toString();
+        }, false);
+
+        $scope.$watch("value", function (newVal, oldVal) {
+            console.log("----------------------------------------------");
+            console.log("Old value:", oldVal);
+            console.log("New value:", newVal);
+        });
+    });
+
+    app.controller("digetstController", function ($scope, $rootScope) {
+        $scope.randomNumber = Math.random() * 100;
+
+        document.querySelector("#btn-scope2-gen").addEventListener("click", function () {
+            $scope.randomNumber = Math.random() * 100;
+            $scope.$digest();
+        }, false);
+
+        $scope.refresh = function () {
+            $rootScope.$digest(); //This will cause error, $apply() also causes error.
+        }
+    });
+</script>

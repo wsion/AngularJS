@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Login App";
+}
+
+<h1>Basic Login Form</h1>
+<div ng-app="myApp">
+    <div class="panel panel-info">
+        <div class="panel-body">
+            <div ng-view></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var app = angular.module('myApp', ['ngRoute']);
+
+    app.config(function ($routeProvider) {
+        $routeProvider
+        .when('/', {
+            templateUrl: "/FrontEnd/Partial?viewname=6-1-login",
+            title: 'Login'
+        })
+        .when('/profile', {
+            resolve: {
+                "check": function ($location, $rootScope) {
+                    console.log($rootScope);
+                    if ($rootScope.hasOwnProperty('autherized') && $rootScope.autherized) {
+
+                    } else {
+                        $location.path('/')
+                    }
+                }
+            },
+            templateUrl: "/FrontEnd/Partial?viewname=6-2-profile",
+            title: 'Profile'
+        })
+        .when('/error', {
+            template: 'Invalid username/password.'
+        })
+        .otherwise({
+            template: 'Page not found without 404 code.'
+        });
+    });
+
+    app.controller("loginController", function ($scope, $location, $rootScope) {
+        console.log(arguments);
+        $scope.submit = function () {
+            var username = $scope.username;
+            var password = $scope.password;
+            if (username == "admin" && password == "admin") {
+                $rootScope.autherized = true;
+                $location.path('/profile');
+            } else {
+                $rootScope.autherized = false;
+                $location.path('/error');
+            }
+        };
+    })
+</script>
+
+@section scripts{
+    <script src="~/Scripts/angular-route.min.js"></script>
+}
